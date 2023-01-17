@@ -21,6 +21,7 @@ int main(int argc, char** argv)
     try
     {
         Board board = loadBoard(argv[1]);
+        solver(board);
         board.dump(std::cout);
     }
     catch (std::exception& e)
