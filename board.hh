@@ -18,6 +18,7 @@ class Board
         void setTile(int x, int y, Tile tile);
         Tile getTile(int x, int y);
         void print();
+        void dump(std::ostream& stream);
         bool isBoardValid();
         Tile& operator[](int index) { return _board[index]; }
 

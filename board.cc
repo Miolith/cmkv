@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
 
 void Board::setTile(int x, int y, Tile tile)
 {
@@ -54,12 +55,21 @@ bool Board::isBoardValid()
     return true;
 }
 
+void Board::dump(std::ostream& stream)
+{
+    for (int i = 0; i < size * size; i++)
+    {
+        Tile tile = _board[i];
+        stream << tile.top << tile.left << tile.right << tile.bottom;
+        stream << std::endl;
+    }
+}
+
 
 Board loadBoard(std::string filename)
 {
     std::ifstream file(filename);
     std::string line;
-    std::getline(file, line);
     
     Board board;
     int size = 0;
@@ -67,7 +77,7 @@ Board loadBoard(std::string filename)
     {
         std::istringstream iss(line);
         char top, right, bottom, left;
-        if (!(iss >> top >> right >> bottom >> left))
+        if (!(iss >> top >> left >> right >> bottom))
         {
             throw "Invalid board file";
         }
@@ -82,12 +92,13 @@ Board loadBoard(std::string filename)
         { 
             if (fixed == '@')
             {
-                board[size].fixed = true;
+                tile.fixed = true;
             }
         }
         board[size] = tile;
         size++;
     }
-    board.size = size;
+    // square root of the number of tiles
+    board.size = sqrt(size);
     return board;
 }
