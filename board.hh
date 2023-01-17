@@ -22,7 +22,7 @@ class Board
         void print();
         void dump(std::ostream& stream);
         bool isBoardValid();
-        Tile& operator[](int index) { return _board[index]; }
+        inline Tile& operator[](int index) { return _board[index]; }
 
     private:
         std::array<Tile, 36> _board;
