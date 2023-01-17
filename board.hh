@@ -1,5 +1,6 @@
 #include <array>
-
+#include <variant>
+#include <string>
 
 struct Tile
 {
@@ -10,20 +11,18 @@ struct Tile
     int left = 0;
 };
 
-template<std::size_t N>
-class Board : std::array<Tile, N>
+class Board
 {
     public:
-        Board() : std::array<Tile, N>() {}
-
+        int size;
         void setTile(int x, int y, Tile tile);
         Tile getTile(int x, int y);
         void print();
         bool isBoardValid();
+        Tile& operator[](int index) { return _board[index]; }
+
+    private:
+        std::array<Tile, 36> _board;
 };
 
-// instanciate 3x3, 4x4, 5x5 and 6x6 boards
-template class Board<3>;
-template class Board<4>;
-template class Board<5>;
-template class Board<6>;
+Board loadBoard(std::string filename);

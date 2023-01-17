@@ -1,24 +1,24 @@
 #include "board.hh"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
-template<std::size_t N>
-void Board<N>::setTile(int x, int y, Tile tile)
+void Board::setTile(int x, int y, Tile tile)
 {
-    this->at(x + y * N) = tile;
+    _board.at(x + y * size) = tile;
 }
 
-template<std::size_t N>
-Tile Board<N>::getTile(int x, int y)
+Tile Board::getTile(int x, int y)
 {
-    return this->at(x + y * N);
+    return _board.at(x + y * size);
 }
 
-template<std::size_t N>
-void Board<N>::print()
+void Board::print()
 {
-    for (int y = 0; y < N; y++)
+    for (int y = 0; y < size; y++)
     {
-        for (int x = 0; x < N; x++)
+        for (int x = 0; x < size; x++)
         {
             std::cout << this->getTile(x, y).top << " ";
         }
@@ -26,12 +26,11 @@ void Board<N>::print()
     }
 }
 
-template<std::size_t N>
-bool Board<N>::isBoardValid()
+bool Board::isBoardValid()
 {
-    for (int y = 0; y < N; y++)
+    for (int y = 0; y < size; y++)
     {
-        for (int x = 0; x < N; x++)
+        for (int x = 0; x < size; x++)
         {
             Tile tile = this->getTile(x, y);
             if (x > 0)
@@ -53,4 +52,42 @@ bool Board<N>::isBoardValid()
         }
     }
     return true;
+}
+
+
+Board loadBoard(std::string filename)
+{
+    std::ifstream file(filename);
+    std::string line;
+    std::getline(file, line);
+    
+    Board board;
+    int size = 0;
+    while ( getline(file, line) )
+    {
+        std::istringstream iss(line);
+        char top, right, bottom, left;
+        if (!(iss >> top >> right >> bottom >> left))
+        {
+            throw "Invalid board file";
+        }
+        Tile tile;
+        tile.top = top - '0';
+        tile.right = right - '0';
+        tile.bottom = bottom - '0';
+        tile.left = left - '0';
+
+        char dump, fixed;
+        if ((iss >> dump >> fixed))
+        { 
+            if (fixed == '@')
+            {
+                board[size].fixed = true;
+            }
+        }
+        board[size] = tile;
+        size++;
+    }
+    board.size = size;
+    return board;
 }
