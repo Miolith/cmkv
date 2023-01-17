@@ -14,7 +14,9 @@ struct Tile
 class Board
 {
     public:
+        int dim;
         int size;
+
         void setTile(int x, int y, Tile tile);
         Tile getTile(int x, int y);
         void print();

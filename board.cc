@@ -7,19 +7,19 @@
 
 void Board::setTile(int x, int y, Tile tile)
 {
-    _board.at(x + y * size) = tile;
+    _board.at(x + y * dim) = tile;
 }
 
 Tile Board::getTile(int x, int y)
 {
-    return _board.at(x + y * size);
+    return _board.at(x + y * dim);
 }
 
 void Board::print()
 {
-    for (int y = 0; y < size; y++)
+    for (int y = 0; y < dim; y++)
     {
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < dim; x++)
         {
             std::cout << this->getTile(x, y).top << " ";
         }
@@ -29,9 +29,9 @@ void Board::print()
 
 bool Board::isBoardValid()
 {
-    for (int y = 0; y < size; y++)
+    for (int y = 0; y < dim; y++)
     {
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < dim; x++)
         {
             Tile tile = this->getTile(x, y);
             if (x > 0)
@@ -57,7 +57,7 @@ bool Board::isBoardValid()
 
 void Board::dump(std::ostream& stream)
 {
-    for (int i = 0; i < size * size; i++)
+    for (int i = 0; i < size; i++)
     {
         Tile tile = _board[i];
         stream << tile.top << tile.left << tile.right << tile.bottom;
@@ -99,6 +99,7 @@ Board loadBoard(std::string filename)
         size++;
     }
     // square root of the number of tiles
-    board.size = sqrt(size);
+    board.dim = sqrt(size);
+    board.size = size;
     return board;
 }
