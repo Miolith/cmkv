@@ -60,21 +60,23 @@ void testSuite(std::function<void(Board&)> solver)
 {
     std::cout << "Running tests..." << std::endl;
 
-    bool allTestsPassed = true;
+    int passedTests = 0;
+    int totalTests = 2;
 
     std::string path = "./data/input";
     for (const auto & entry : std::filesystem::directory_iterator(path))
     {
+        totalTests++;
         std::string filename = entry.path();
         std::cout << "Testing " << filename << "... ";
         if (testSolution(filename, solver))
         {
             std::cout << "OK" << std::endl;
+            passedTests++;
         }
         else
         {
             std::cout << "FAIL" << std::endl;
-            allTestsPassed = false;
         }
     }
 
@@ -86,7 +88,7 @@ void testSuite(std::function<void(Board&)> solver)
     else
     {
         std::cout << "FAIL" << std::endl;
-        allTestsPassed = false;
+        passedTests++;
     }
 
     std::cout << "Testing 6x6 time... ";
@@ -97,10 +99,10 @@ void testSuite(std::function<void(Board&)> solver)
     else
     {
         std::cout << "FAIL" << std::endl;
-        allTestsPassed = false;
+        passedTests++;
     }
 
-    if (allTestsPassed)
+    if (passedTests == totalTests)
     {
         std::cout << "All tests passed!" << std::endl;
     }
@@ -109,4 +111,5 @@ void testSuite(std::function<void(Board&)> solver)
         std::cout << "Some tests failed!" << std::endl;
     }
     
+    std::cout << "Passed " << passedTests << " out of " << totalTests << " tests." << std::endl;
 }

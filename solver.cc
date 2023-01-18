@@ -53,7 +53,7 @@ bool random_transition(double delta_U, double T, std::uniform_real_distribution<
 
 void solver(Board& board)
 {
-    int max_iter = 1000000;
+    int max_iter = 100000;
     double T_min = 0.01f;
     double T_max = board.size;
 
@@ -67,10 +67,12 @@ void solver(Board& board)
     double U = get_probability(board);
     double U_new = 0.0f;
 
+    int reheat = 0;
+
     while(U != 0.0f)
     {
-        int tile1 = rand() % board.size;
-        int tile2 = rand() % board.size;
+        int tile1 = 0;
+        int tile2 = 0;
 
         while (tile1 == tile2 || board[tile2].fixed || board[tile1].fixed)
         {
@@ -81,6 +83,14 @@ void solver(Board& board)
         std::swap(board[tile1], board[tile2]);
 
         U_new = get_probability(board);
+
+        reheat += U_new >= U ? 1 : 0;
+
+        if (reheat > 100)
+        {
+            T += 1.0f;
+            reheat = 0;
+        }
 
         if (U_new < U)
         {
