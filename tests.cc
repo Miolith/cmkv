@@ -84,22 +84,22 @@ void testSuite(std::function<void(Board&)> solver)
     if (timeTest4x4(solver))
     {
         std::cout << "OK" << std::endl;
+        passedTests++;
     }
     else
     {
         std::cout << "FAIL" << std::endl;
-        passedTests++;
     }
 
     std::cout << "Testing 6x6 time... ";
     if (timeTest6x6(solver))
     {
         std::cout << "OK" << std::endl;
+        passedTests++;
     }
     else
     {
         std::cout << "FAIL" << std::endl;
-        passedTests++;
     }
 
     if (passedTests == totalTests)

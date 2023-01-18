@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <random>
+#include <algorithm>
 
 void Board::setTile(int x, int y, Tile tile)
 {
@@ -53,6 +55,28 @@ bool Board::isBoardValid()
         }
     }
     return true;
+}
+
+void Board::shuffleBoard()
+{
+    std::random_device rd;  
+    std::mt19937 g(rd());
+
+    int i = 0;
+    for (; i < size; i++)
+    {
+        if (_board[i].fixed)
+            break;
+    }
+
+    std::shuffle(_board.begin(), _board.begin(), g);
+
+    int j = 0;
+    for (; j < size; j++)
+    {
+        if (_board[j].fixed)
+            std::swap(_board[i], _board[j]);
+    }
 }
 
 void Board::dump(std::ostream& stream)

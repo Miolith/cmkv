@@ -24,6 +24,7 @@ class Board
         void print();
         void dump(std::ostream& stream);
         bool isBoardValid();
+        void shuffleBoard();
         inline Tile& operator[](int index) { return _board[index]; }
 
     private:

@@ -53,8 +53,8 @@ bool random_transition(double delta_U, double T, std::uniform_real_distribution<
 
 void solver(Board& board)
 {
-    int max_iter = 100000;
-    double T_min = 0.01f;
+    int max_iter = 10000000;
+    double T_min = 1.0f / board.size / 100;
     double T_max = board.size;
 
     std::random_device rd;  
@@ -62,7 +62,9 @@ void solver(Board& board)
 	auto distrib = std::uniform_real_distribution<double>(0.0, 1.0);
 
     double T = T_max;
-    double T_step = 0.99;
+    double T_step = 0.85f;
+    //double T_step = (double)(T_max - 1) / T_max;
+    //T_step *= T_step;
 
     double U = get_probability(board);
     double U_new = 0.0f;
