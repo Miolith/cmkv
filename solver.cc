@@ -7,37 +7,22 @@
 
 // Tetravex solver using simulated annealing and metropolis algorithm
 
-double get_distance(Board& b, int i, int j)
+double get_distance(Board& b, int x, int y)
 {
     double U = 0;
-    
-    if (i - 1 > 0)
+    auto tile = b.getTile(x, y);
+    if (y > 0)
     {
-        int top = b.getTile(i, j).top;
-        int bot = b.getTile(i-1, j).bottom;
+        int top = tile.top;
+        int bot = b.getTile(x, y - 1).bottom;
         U += bot == top ? 0 : 1;
     }
     
-    if (i + 1 < b.dim)
+    if (x > 0)
     {
-        int bot = b.getTile(i, j).bottom;
-        int top = b.getTile(i+1, j).top;
-        U += bot == top ? 0 : 1;
-    }
-    
-    if (j - 1 > 0)
-    {
-        int left = b.getTile(i, j).left;
-        int right = b.getTile(i, j-1).right;
+        int left = tile.left;
+        int right = b.getTile(x - 1, y).right;
         U += left == right ? 0 : 1;
-    }
-
-    
-    if (j + 1 < b.dim)
-    {
-        int right = b.getTile(i, j).right;
-        int left = b.getTile(i, j+1).left;
-        U += right == left ? 0 : 1;
     }
 
     return U;
@@ -47,11 +32,11 @@ double get_probability(Board& b)
 {
     double U = 0.0f;
 
-    for (int i = 0; i < b.dim; i++)
+    for (int x = 0; x < b.dim; x++)
     {
-        for (int j = 0; j < b.dim; j++)
+        for (int y = 0; y < b.dim; y++)
         {
-            U += get_distance(b, i, j);
+            U += get_distance(b, x, y);
         }
     }
 
@@ -69,8 +54,8 @@ bool random_transition(double delta_U, double T, std::uniform_real_distribution<
 void solver(Board& board)
 {
     int max_iter = 1000000;
-    double T_min = .0f;
-    double T_max = 10000.0f;
+    double T_min = 0.01f;
+    double T_max = board.size;
 
     std::random_device rd;  
 	auto g = std::mt19937(rd()); 
