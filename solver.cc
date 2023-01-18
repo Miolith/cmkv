@@ -58,7 +58,7 @@ void solver(Board& board)
     int max_iter = 100000000;
     // double T_min = 1.0f / board.size / board.size;
     double T_min = pow(0.1, board.dim);
-    double T_max = 1000.0f;
+    double T_max = pow(10.0f, board.dim);
 
     std::random_device rd;  
 	auto g = std::mt19937(rd()); 
