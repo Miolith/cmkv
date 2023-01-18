@@ -32,6 +32,8 @@ bool timeTest4x4(std::function<void(Board&)> solver)
     
     // check that time is less than 1 second
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    // print the time in seconds 
+    std::cout << duration.count() / 1000.0 << "s  ";
     return duration.count() < 1000;
 }
 
@@ -53,6 +55,7 @@ bool timeTest6x6(std::function<void(Board&)> solver)
     
     // check that time is less than 30 seconds
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    std::cout << duration.count() / 1000.0 << "s  ";
     return duration.count() < 1000 * 30;
 }
 
