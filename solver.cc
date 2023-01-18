@@ -56,7 +56,7 @@ constexpr double T_min_list[] = {0.01};
 void solver(Board& board)
 {
     int max_iter = 100000000;
-    // double T_min = 1.0f / board.size / board.size;
+    
     double T_min = pow(0.1, board.dim);
     double T_max = pow(10.0f, board.dim);
 
@@ -65,11 +65,9 @@ void solver(Board& board)
 	auto distrib = std::uniform_real_distribution<double>(0.0, 1.0);
 
     double T = T_max;
-    // dim 4 : 0.95
-    // dim 6 : 0.90
+    
     double T_step = 1.0f - (board.dim + 3)/100.0f;
-    //double T_step = (double)(T_max - 1) / T_max;
-    //T_step *= T_step;
+    
 
     double U = get_probability(board);
     double U_new = 0.0f;
