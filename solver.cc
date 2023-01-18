@@ -51,7 +51,6 @@ bool random_transition(double delta_U, double T, std::uniform_real_distribution<
     return r < p;
 }
 
-constexpr double T_min_list[] = {0.01};
 
 void solver(Board& board)
 {
@@ -59,16 +58,13 @@ void solver(Board& board)
     
     double T_min = pow(0.1, board.dim);
     double T_max = pow(10.0f, board.dim);
-
+    double T_step = 1.0f - (board.dim + 3)/100.0f;
+    
     std::random_device rd;  
 	auto g = std::mt19937(rd()); 
 	auto distrib = std::uniform_real_distribution<double>(0.0, 1.0);
 
     double T = T_max;
-    
-    double T_step = 1.0f - (board.dim + 3)/100.0f;
-    
-
     double U = get_probability(board);
     double U_new = 0.0f;
 
