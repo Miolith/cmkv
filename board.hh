@@ -6,7 +6,6 @@
 
 struct Tile
 {
-    bool fixed = false;
     int top = 0;
     int right = 0;
     int bottom = 0;
@@ -18,6 +17,8 @@ class Board
     public:
         int dim;
         int size;
+        int unfixedSize;
+        std::array<int, 36> _unfixedTiles;
 
         void setTile(int x, int y, Tile tile);
         Tile getTile(int x, int y);

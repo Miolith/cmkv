@@ -89,11 +89,8 @@ void solver(Board& board)
 
     while(U != 0.0f)
     {
-        do
-        {
-            tile1 = xorshf96() % board.size;
-            tile2 = xorshf96() % board.size;
-        } while (board[tile2].fixed || board[tile1].fixed);
+        tile1 = board._unfixedTiles[xorshf96() % board.unfixedSize];
+        tile2 = board._unfixedTiles[xorshf96() % board.unfixedSize];
 
         std::swap(board[tile1], board[tile2]);
 

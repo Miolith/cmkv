@@ -57,28 +57,6 @@ bool Board::isBoardValid()
     return true;
 }
 
-void Board::shuffleBoard()
-{
-    std::random_device rd;  
-    std::mt19937 g(rd());
-
-    int i = 0;
-    for (; i < size; i++)
-    {
-        if (_board[i].fixed)
-            break;
-    }
-
-    std::shuffle(_board.begin(), _board.begin(), g);
-
-    int j = 0;
-    for (; j < size; j++)
-    {
-        if (_board[j].fixed)
-            std::swap(_board[i], _board[j]);
-    }
-}
-
 void Board::dump(std::ostream& stream)
 {
     for (int i = 0; i < size; i++)
@@ -97,6 +75,7 @@ Board loadBoard(std::string filename)
     
     Board board;
     int size = 0;
+    int unfixedSize = 0;
     while ( getline(file, line) )
     {
         std::istringstream iss(line);
@@ -111,19 +90,23 @@ Board loadBoard(std::string filename)
         tile.bottom = bottom - '0';
         tile.left = left - '0';
 
+        board._unfixedTiles[unfixedSize] = size;
+
         char dump, fixed;
         if ((iss >> dump >> fixed))
         { 
             if (fixed == '@')
             {
-                tile.fixed = true;
+                unfixedSize--;
             }
         }
         board[size] = tile;
         size++;
+        unfixedSize++;
     }
     // square root of the number of tiles
     board.dim = sqrt(size);
     board.size = size;
+    board.unfixedSize = unfixedSize;
     return board;
 }
