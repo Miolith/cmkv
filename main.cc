@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "board.hh"
 #include "solver.hh"
@@ -22,7 +23,8 @@ int main(int argc, char** argv)
     {
         Board board = loadBoard(argv[1]);
         solver(board);
-        board.dump(std::cout);
+        std::ofstream file(argv[2]);
+        board.dump(file);
     }
     catch (std::exception& e)
     {
