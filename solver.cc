@@ -43,7 +43,7 @@ double get_global_dist(Board& b)
     return U;
 }
 
-bool random_transition(double delta_U, double T, std::uniform_real_distribution<double>& distrib, std::mt19937& g)
+bool random_transition(double delta_U, double T, std::uniform_real_distribution<double>& distrib, std::minstd_rand& g)
 {
     double p = exp(-delta_U / T);
     double r = distrib(g);
@@ -51,6 +51,21 @@ bool random_transition(double delta_U, double T, std::uniform_real_distribution<
     return r < p;
 }
 
+static unsigned long x=123456789, y=362436069, z=521288629;
+
+unsigned long xorshf96(void) {
+unsigned long t;
+    x ^= x << 16;
+    x ^= x >> 5;
+    x ^= x << 1;
+
+   t = x;
+   x = y;
+   y = z;
+   z = t ^ x ^ y;
+
+  return z;
+}
 
 void solver(Board& board)
 {
@@ -61,7 +76,7 @@ void solver(Board& board)
     double T_step = (97 - board.dim)/100.0f;
     
     std::random_device rd;  
-    auto g = std::mt19937(rd()); 
+    auto g = std::minstd_rand(rd()); 
     auto distrib = std::uniform_real_distribution<double>(0.0, 1.0);
 
     double T = T_max;
@@ -76,8 +91,8 @@ void solver(Board& board)
     {
         do
         {
-            tile1 = rand() % board.size;
-            tile2 = rand() % board.size;
+            tile1 = xorshf96() % board.size;
+            tile2 = xorshf96() % board.size;
         } while (board[tile2].fixed || board[tile1].fixed);
 
         std::swap(board[tile1], board[tile2]);
