@@ -82,7 +82,7 @@ Board loadBoard(std::string filename)
         char top, right, bottom, left;
         if (!(iss >> top >> left >> right >> bottom))
         {
-            throw "Invalid board file";
+            throw std::invalid_argument("Invalid board file");
         }
         Tile tile;
         tile.top = top - '0';
@@ -104,6 +104,7 @@ Board loadBoard(std::string filename)
         size++;
         unfixedSize++;
     }
+
     // square root of the number of tiles
     board.dim = sqrt(size);
     board.size = size;
