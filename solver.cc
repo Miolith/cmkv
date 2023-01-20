@@ -77,7 +77,7 @@ void solver(Board& board)
     
     std::random_device rd;  
     auto g = std::minstd_rand(rd()); 
-    auto distrib = std::uniform_real_distribution<double>(0.0, 1.0);
+    auto distrib = std::uniform_real_distribution<double>(0.0f, 1.0f);
 
     double T = T_max;
     double U = get_global_dist(board);
